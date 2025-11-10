@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import CvViewer from "./CvViewer";
+
 
 function getColor(score) {
   if (score >= 85) return "bg-green-500";
@@ -51,64 +53,74 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-100 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-8">
-        <h1 className="text-4xl font-bold text-center text-indigo-700 mb-6">
-          CV Analyzer
-        </h1>
+    <div className="min-h-screen bg-gray-100">
+      {!result && (
+        <div className="flex flex-col items-center justify-center h-screen text-center">
+          <h1 className="text-4xl font-bold text-indigo-700 mb-4">CV Analyzer</h1>
+          <p className="text-gray-600 mb-8 w-3/4 md:w-1/2">
+            Upload your CV (PDF or DOCX) to receive a detailed analysis and live preview.
+          </p>
 
-        {!result && (
-          <>
-            <p className="text-gray-600 text-center mb-8">
-              Upload your CV (PDF or DOCX) to receive a detailed analysis and score.
-            </p>
-
-            <div className="flex flex-col items-center justify-center space-y-4">
-              <label
-                htmlFor="file-upload"
-                className="w-full sm:w-auto cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-indigo-300 rounded-xl p-8 hover:bg-indigo-50 transition"
+          <div className="flex flex-col items-center gap-4">
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-indigo-300 rounded-xl p-10 hover:bg-indigo-50 transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-indigo-600 mb-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-indigo-600 mb-3"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M7 16V4m0 0L3 8m4-4l4 4m10 8v4m0 0h-4m4 0h4"
-                  />
-                </svg>
-                <span className="text-indigo-600 font-semibold">
-                  {file ? file.name : "Click to select a file"}
-                </span>
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept=".pdf,.docx"
-                  onChange={handleFileChange}
-                  className="hidden"
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M7 16V4m0 0L3 8m4-4l4 4m10 8v4m0 0h-4m4 0h4"
                 />
-              </label>
+              </svg>
+              <span className="text-indigo-600 font-semibold">
+                {file ? file.name : "Click to select a file"}
+              </span>
+              <input
+                id="file-upload"
+                type="file"
+                accept=".pdf,.docx"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
 
-              <button
-                onClick={handleUpload}
-                disabled={loading}
-                className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition disabled:opacity-50"
-              >
-                {loading ? "Analyzing..." : "Upload & Analyze"}
-              </button>
+            <button
+              onClick={handleUpload}
+              disabled={loading}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition disabled:opacity-50"
+            >
+              {loading ? "Analyzing..." : "Upload & Analyze"}
+            </button>
 
-              {error && <p className="text-red-600">{error}</p>}
-            </div>
-          </>
-        )}
+            {error && <p className="text-red-600">{error}</p>}
+          </div>
+        </div>
+      )}
 
-        {result && (
-          <div className="mt-8">
+      {result && (
+        <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
+          {/* Left: CV Preview */}
+          <div className="p-4 bg-gray-200 flex justify-center items-center">
+            {file?.type === "application/pdf" ? (
+  <CvViewer file={URL.createObjectURL(file)} />
+) : (
+  <div className="text-gray-600 text-center">
+    <p>CV preview only available for PDF files.</p>
+  </div>
+)}
+
+          </div>
+
+          {/* Right: Results */}
+          <div className="p-6 overflow-y-auto bg-white shadow-inner">
             <div className="flex justify-between items-center border-b pb-3 mb-4">
               <div>
                 <h2 className="text-xl font-semibold text-gray-800">Results</h2>
@@ -131,7 +143,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* Criteria */}
+            {/* Criteria Breakdown */}
             <div>
               <h3 className="font-semibold text-lg mb-2 text-gray-800">
                 Criteria Breakdown
@@ -162,9 +174,7 @@ export default function App() {
             {/* Feedback */}
             {result?.feedback?.length > 0 && (
               <div className="mt-6">
-                <h3 className="font-semibold text-lg mb-2 text-gray-800">
-                  Feedback
-                </h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-800">Feedback</h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-700">
                   {result.feedback.map((f, i) => (
                     <li key={i}>{f}</li>
@@ -173,34 +183,8 @@ export default function App() {
               </div>
             )}
 
-            {/* AI Analysis */}
-            {result?.ai_analysis && (
-              <div className="mt-6 border-t pt-4">
-                <h3 className="font-semibold text-lg mb-2 text-indigo-700">
-                  AI Insights
-                </h3>
-                <p className="text-gray-700 mb-3">
-                  <strong>Summary:</strong> {result.ai_analysis.summary}
-                </p>
-
-                {["strengths", "weaknesses", "recommendations"].map(
-                  (section) =>
-                    result.ai_analysis?.[section]?.length > 0 && (
-                      <div key={section} className="mb-3">
-                        <h4 className="font-medium capitalize">{section}</h4>
-                        <ul className="list-disc list-inside text-gray-700">
-                          {result.ai_analysis[section].map((item, i) => (
-                            <li key={i}>{item}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )
-                )}
-              </div>
-            )}
-
             {/* Back button */}
-            <div className="mt-6 text-center">
+            <div className="mt-8 text-center">
               <button
                 onClick={() => setResult(null)}
                 className="px-6 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
@@ -209,8 +193,8 @@ export default function App() {
               </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
