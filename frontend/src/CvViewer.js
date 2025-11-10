@@ -85,7 +85,7 @@ export default function CvViewer({ file, highlights = [] }) {
                   );
                 })}
 
-              {/* 💬 Animated Tooltip   dsdsds  */}
+              {/* 💬 Animated Tooltip   ds  dsds  */}
               <AnimatePresence>
                 {hovered && hovered.page === i && (() => {
                   const viewerWidth = Math.min(window.innerWidth * 0.9, 850);
