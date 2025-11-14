@@ -144,9 +144,9 @@ export default function App() {
               </div>
             </div>
 
-            {/* Main Content */}
+            {}
             <div className="p-8">
-              {/* Criteria Breakdown */}
+              {}
               <div>
                 <h3 className="font-semibold text-lg mb-3 text-gray-800 flex items-center gap-2">
                   <span className="text-indigo-500">📊</span> Criteria Breakdown
@@ -177,7 +177,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Feedback Section */}
+              {}
               {result?.feedback?.length > 0 && (
                 <div className="mt-8">
                   <h3 className="font-semibold text-lg mb-3 text-gray-800 flex items-center gap-2">
@@ -196,7 +196,7 @@ export default function App() {
                 </div>
               )}
 
-              {/* Upload another CV */}
+              {}
               <div className="mt-10 text-center border-t pt-6">
                 <button
                   onClick={() => setResult(null)}
