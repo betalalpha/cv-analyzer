@@ -54,7 +54,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Upload screen */}
+      {}
       {!result && (
         <div className="flex flex-col items-center justify-center h-screen text-center p-4">
           <h1 className="text-4xl font-bold text-indigo-700 mb-4">
@@ -108,10 +108,10 @@ export default function App() {
         </div>
       )}
 
-      {/* Analysis screen */}
+      {}
       {result && (
         <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
-          {/* Left: CV Viewer */}
+          {}
           <div className="p-0 bg-gray-200 flex justify-center items-center">
             <CvViewer
               file={URL.createObjectURL(file)}
@@ -119,9 +119,9 @@ export default function App() {
             />
           </div>
 
-          {/* Right: Results Panel */}
+          {}
           <div className="p-0 overflow-y-auto bg-white shadow-inner relative">
-            {/* 🔝 Sticky Header */}
+            {}
             <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800">Results</h2>

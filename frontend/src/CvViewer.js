@@ -2,7 +2,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// ✅ Worker setup for pdfjs-dist v5
+
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -12,10 +12,10 @@ export default function CvViewer({ file, highlights = [] }) {
   const [numPages, setNumPages] = useState(null);
   const [error, setError] = useState(null);
   const [hovered, setHovered] = useState(null);
-  const [scaleRatios, setScaleRatios] = useState({}); // store scale per page
+  const [scaleRatios, setScaleRatios] = useState({}); 
   const containerRef = useRef(null);
 
-  // called when a page is rendered
+  
   const handleRenderSuccess = (page, pageIndex) => {
     const viewport = page.getViewport({ scale: 1 });
     const renderedWidth = Math.min(window.innerWidth * 0.9, 850);
@@ -42,7 +42,7 @@ export default function CvViewer({ file, highlights = [] }) {
         >
           {Array.from({ length: numPages }, (_, i) => (
             <div key={i} className="relative inline-block m-4">
-              {/* Render PDF Page */}
+              {}
               <Page
                 pageNumber={i + 1}
                 renderTextLayer={false}
@@ -52,7 +52,7 @@ export default function CvViewer({ file, highlights = [] }) {
                 onRenderSuccess={(page) => handleRenderSuccess(page, i)}
               />
 
-              {/* 🟨 Render Highlights */}
+              {}
               {highlights
                 .filter((h) => h.page === i)
                 .map((h, j) => {
@@ -85,7 +85,7 @@ export default function CvViewer({ file, highlights = [] }) {
                   );
                 })}
 
-              {/* 💬 Animated Tooltip */}
+              {}
               <AnimatePresence>
                 {hovered && hovered.page === i && (() => {
                   const viewerWidth = Math.min(window.innerWidth * 0.9, 850);
