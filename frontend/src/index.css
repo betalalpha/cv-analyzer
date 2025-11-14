@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Optional: set a default background and text color */
+
 body {
   @apply bg-gray-50 text-gray-900;
 }
